@@ -1,14 +1,4 @@
-/*
- * created by Rui Santos, https://randomnerdtutorials.com
- * 
- * Complete Guide for Ultrasonic Sensor HC-SR04
- *
-    Ultrasonic sensor Pins:
-        VCC: +5VDC
-        Trig : Trigger (INPUT) - Pin11
-        Echo: Echo (OUTPUT) - Pin 12
-        GND: GND
- */
+#include "LedControl.h"
 
 // Ultrasonic Sensor
 int trigPin = 41;    // Trigger
@@ -22,6 +12,17 @@ int curOscCt = initOscCt;
 unsigned long lastMillis, lastPMillis;
 int curDelta;
 bool passedOsc;
+
+// Joystick
+int VRy = A0;
+int VRx = A1;
+int xPosition = 0;
+int yPosition = 0;
+short pos[] = {0, 0};
+bool walls[8][8];
+
+// Dot Matrix
+LedControl lc = LedControl(11,13,12,1); // Pins: DIN,CLK,CS, # of displays connected
  
 void setup() {
   // Serial Port begin
@@ -29,9 +30,12 @@ void setup() {
   // Define inputs and outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(VRx, INPUT);
+  pinMode(VRy, INPUT);
 
   passedOsc = false;
   resetOsc();
+  resetMatrix();
 }
 
 void resetOsc() {
@@ -43,9 +47,17 @@ void resetOsc() {
   lastPMillis = 0;
 }
 
+void resetMatrix() {
+  pos[0] = 0;
+  pos[1] = 0;
+  lc.shutdown(0,false);  // Wake up display
+  lc.setIntensity(0,5);  // Set intensity level
+  lc.clearDisplay(0);  // Clear Display
+}
+
 bool runOsc() {
   // Call from main loop; returns whether it has passed the ultrasonic challenge
-  lastMillis = millis();
+
   // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
   digitalWrite(trigPin, LOW);
@@ -74,18 +86,21 @@ bool runOsc() {
     }
   }
   
-  Serial.print(cm);
-  Serial.print("cm ");
-  Serial.print(curOscCt);
-  Serial.println();
+  //Serial.print(cm);
+  //Serial.print("cm ");
+  //Serial.print(curOscCt);
+  //Serial.println();
   lastCM = cm;
 
-  //delay to exactly 100 ms
   
-  delay(min(100 - (millis() - lastMillis),100));
   return curOscCt <= 0;
 }
  
 void loop() {
-  passedOsc = runOsc();
+  lastMillis = millis();
+  //passedOsc = runOsc();
+  getJoystick(VRx, VRy, xPosition, yPosition, pos, lc, walls);
+
+  //delay to exactly 100 ms
+  delay(min(75 - (millis() - lastMillis),75));
 }
