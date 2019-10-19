@@ -13,3 +13,11 @@ void dispTextSimple(LiquidCrystal_PCF8574 myLCD,
 
 void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
 	String tot);
+
+void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
+	String tot);
+
+// int countWords(LiquidCrystal_PCF8574 myLCD, String inString);
+int countWords(String inString);
+
+void parseString(String inString, int numWords, String* words);

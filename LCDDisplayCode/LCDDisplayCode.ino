@@ -32,25 +32,40 @@ void setup()
 
 void loop()
 {
-//  if (show == 0) {
-//    lcd.setBacklight(100);
-//    lcd.home(); lcd.clear();
-//    lcd.print("Hello LCD");
-//    lcd.setCursor(0,1);
-//    lcd.print("circuits4You.com");
+
+  // Test left shift text
+  if (true) {
     dispTextSimple(lcd, "Hello World!", "From your man :)");
     delay(1000);
-
+  
     lcd.setBacklight(0);
     delay(400);
     lcd.setBacklight(255);
+  }
 
+  // Test Scrolling Text without parsings
+  if (false) {
     dispTextScroll(lcd, "Hello World from an LCD. From your main man :). Welcome to Arduino Land");
     delay(1000);
 
     lcd.setBacklight(0);
     delay(400);
     lcd.setBacklight(255);
+  }
+
+  // Test String Comprehension
+  if (true) {
+    int numWords = countWords("1 2 3 4 5 6");
+    dispTextSimple(lcd, String(numWords), "");
+  
+    String words[numWords];
+    parseString("1 2 3 4 5 6", numWords, words);
+  
+    for (int i = 0; i < numWords; ++ i) {
+      Serial.println(words[i]);
+    }
+  }
+  
 
 //  } 
 //    else if (show == 1) {
