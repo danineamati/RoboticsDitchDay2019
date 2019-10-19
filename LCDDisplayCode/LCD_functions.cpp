@@ -50,10 +50,7 @@ void dispTextShift(LiquidCrystal_PCF8574 myLCD,
     // While the line characters are such that the message has not
     // been fully displayed, then the shift left
     do {
-    	myLCD.setCursor(0,0);
-    	myLCD.print(line1);
-	    myLCD.setCursor(0,1);
-	    myLCD.print(line2);
+    	dispTextSimplest(myLCD, line1, line2);
 	    
 	    delay(1000); // Delay to allow reading
 
@@ -102,10 +99,7 @@ void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
     	line2 = tot.substring(line2Start, line2Start + lcdMaxLength);
 
 
-    	myLCD.setCursor(0,0);
-    	myLCD.print(line1);
-    	myLCD.setCursor(0,1);
-    	myLCD.print(line2);
+    	dispTextSimplest(myLCD, line1, line2);
 
     	totCounter -= lcdMaxLength; // Moved one whole line
     	line1Start += lcdMaxLength; // Move line 2 to line 1
@@ -123,11 +117,7 @@ void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
     	line1 = tot.substring(line1Start, line1Start + lcdMaxLength);
     	line2 = tot.substring(line2Start);
 
-    	myLCD.setCursor(0,0);
-    	myLCD.print(line1);
-    	myLCD.setCursor(0,1);
-    	myLCD.print(line2);
-
+    	dispTextSimplest(myLCD, line1, line2);
     	delay(3000);
     }
 
@@ -192,10 +182,7 @@ void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
     		// otherwise, the line is full.
     		// Print the strings
     		myLCD.clear();
-   			myLCD.setCursor(0,0);
-   			myLCD.print(line1);
-   			myLCD.setCursor(0,1);
-   			myLCD.print(line2);
+   			dispTextSimplest(myLCD, line1, line2);
    			delay(1000);
 		    // Move line 2 to line 1
 		    line1 = line2;
