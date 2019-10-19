@@ -1,7 +1,9 @@
 #include <Wire.h>
 #include <LiquidCrystal_PCF8574.h>
+#include "LCD_functions.h"
 
-LiquidCrystal_PCF8574 lcd(0x27);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_PCF8574 lcd(0x27);  
+// set the LCD address to 0x27 for a 16 chars and 2 line display
 
 int show;
 
@@ -16,7 +18,7 @@ void setup()
   Wire.begin();
   Wire.beginTransmission(0x27); //Your LCD Address
   error = Wire.endTransmission();
-  Serial.print("Error: ");
+  Serial.print("Start Up Status: ");
   Serial.print(error);
 
   if (error == 0) {
@@ -31,61 +33,49 @@ void setup()
 
 void loop()
 {
-  if (show == 0) {
+
+  // Test left shift text
+  if (true) {
+    dispTextShift(lcd, "Hello World!", "From your man :)");
+    delay(1000);
+  
+    lcd.setBacklight(0);
+    delay(400);
     lcd.setBacklight(255);
-    lcd.home(); lcd.clear();
-    lcd.print("Hello LCD");
-    lcd.setCursor(0,1);
-    lcd.print("circuits4You.com");
+  }
+
+  // Test Scrolling Text without parsings
+  if (true) {
+    dispTextScroll(lcd, "Hello World from an LCD. From your main man :). Welcome to Arduino Land!");
     delay(1000);
 
     lcd.setBacklight(0);
     delay(400);
     lcd.setBacklight(255);
+  }
 
-  } else if (show == 1) {
-    lcd.clear();
-    lcd.print("Cursor On");
-    lcd.cursor();
+  // Test String Comprehension
+  if (false) {
+    int numWords = countWords("1 2 3 4 5 6");
+    dispTextSimplest(lcd, String(numWords), "");
+  
+    String words[numWords];
+    parseString("1 2 3 4 5 6", numWords, words);
+  
+    for (int i = 0; i < numWords; ++ i) {
+      Serial.println(words[i]);
+    }
+  }
+  
+  // Test Scrolling Text WITH parsing
+  if (true) {
+    dispWordsScroll(lcd, "Hello World from an LCD. From your main man :). Welcome to Arduino Land");
+    delay(1000);
 
-  } else if (show == 2) {
-    lcd.clear();
-    lcd.print("Cursor Blink");
-    lcd.blink();
-
-  } else if (show == 3) {
-    lcd.clear();
-    lcd.print("Cursor OFF");
-    lcd.noBlink();
-    lcd.noCursor();
-
-  } else if (show == 4) {
-    lcd.clear();
-    lcd.print("Display Off");
-    lcd.noDisplay();
-
-  } else if (show == 5) {
-    lcd.clear();
-    lcd.print("Display On");
-    lcd.display();
-
-  } else if (show == 7) {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("*** first line.");
-    lcd.setCursor(0, 1);
-    lcd.print("*** second line.");
-
-  } else if (show == 8) {
-    lcd.scrollDisplayLeft();
-  } else if (show == 9) {
-    lcd.scrollDisplayLeft();
-  } else if (show == 10) {
-    lcd.scrollDisplayLeft();
-  } else if (show == 11) {
-    lcd.scrollDisplayRight();
+    lcd.setBacklight(0);
+    delay(400);
+    lcd.setBacklight(255);
   }
 
   delay(2000);
-  show = (show + 1) % 12;
 }
