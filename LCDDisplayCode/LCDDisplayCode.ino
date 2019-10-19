@@ -2,7 +2,8 @@
 #include <LiquidCrystal_PCF8574.h>
 #include "LCD_functions.h"
 
-LiquidCrystal_PCF8574 lcd(0x27);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_PCF8574 lcd(0x27);  
+// set the LCD address to 0x27 for a 16 chars and 2 line display
 
 int show;
 
