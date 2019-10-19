@@ -54,7 +54,7 @@ void loop()
   }
 
   // Test String Comprehension
-  if (true) {
+  if (false) {
     int numWords = countWords("1 2 3 4 5 6");
     dispTextSimple(lcd, String(numWords), "");
   
@@ -66,6 +66,15 @@ void loop()
     }
   }
   
+  // Test Scrolling Text WITH parsing
+  if (true) {
+    dispWordsScroll(lcd, "Hello World from an LCD. From your main man :). Welcome to Arduino Land");
+    delay(1000);
+
+    lcd.setBacklight(0);
+    delay(400);
+    lcd.setBacklight(255);
+  }
 
 //  } 
 //    else if (show == 1) {

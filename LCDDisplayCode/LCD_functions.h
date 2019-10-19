@@ -8,7 +8,10 @@ ME/CS/EE 129
 #include <Arduino.h>
 #include <LiquidCrystal_PCF8574.h>
 
-void dispTextSimple(LiquidCrystal_PCF8574 myLCD, 
+void dispTextSimplest(LiquidCrystal_PCF8574 myLCD, 
+	String line1, String line2)
+
+void dispTextShift(LiquidCrystal_PCF8574 myLCD, 
 	String line1, String line2);
 
 void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
