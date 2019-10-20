@@ -48,7 +48,7 @@ int state = 0;
 int LEDpin_state1 = 2; // Green
 int LEDpin_state2 = 3; // Green
 int LEDpin_state3 = 4; // Green
-int LEDpin_state4 = 6; // red failure
+int LEDpin_state4 = 7; // red failure
 
 bool task1_RFID = false;
 bool task2_Oscill = false;
@@ -67,6 +67,7 @@ void setup() {
   pinMode(LEDpin_state1, OUTPUT);
   pinMode(LEDpin_state2, OUTPUT);
   pinMode(LEDpin_state3, OUTPUT);
+  pinMode(LEDpin_state4, OUTPUT);
 
   myservo.attach(9);
   myservo.write(0);
@@ -90,7 +91,6 @@ void setup() {
   lcd.begin(16, 2); // initialize the lcd (16 char, 2 lines)
   lcd.setBacklight(100);
   //dispTextSimplest(lcd, "Welcome!", "LCD: Ready");
-
   delay(1000);
   
   // initialize RFID
