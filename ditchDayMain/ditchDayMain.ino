@@ -31,6 +31,7 @@
 
 #include <MFRC522.h>
 #include <Wire.h>
+#include <Servo.h>
 
 // LCD Set up
 LiquidCrystal_PCF8574 lcd(0x27);  
@@ -58,11 +59,16 @@ unsigned long lastMillis;
 
 String serialInput = "";
 
+Servo myservo;
+
 void setup() {
   // initialize LEDs
   pinMode(LEDpin_state1, OUTPUT);
   pinMode(LEDpin_state2, OUTPUT);
   pinMode(LEDpin_state3, OUTPUT);
+
+  myservo.attach(9);
+  myservo.write(0);
   
   // initialize Serial (for debugging)
   Serial.begin(9600);
@@ -301,6 +307,7 @@ void loop() {
     digitalWrite(LEDpin_state3, HIGH);
 
     // display message
+    myservo.write(180);
     dispWordsScroll(lcd, "CONGRATULATIONS!! YOU RECOVERED THE MAGIC LAMP!");
 
   } 
