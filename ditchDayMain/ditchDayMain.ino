@@ -45,9 +45,10 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
 // global state variable
 int state = 0;
-int LEDpin_state1 = 2; // Red
+int LEDpin_state1 = 2; // Green
 int LEDpin_state2 = 3; // Green
-int LEDpin_state3 = 4; // Blue
+int LEDpin_state3 = 4; // Green
+int LEDpin_state4 = 6; // red failure
 
 bool task1_RFID = false;
 bool task2_Oscill = false;
@@ -201,7 +202,7 @@ void loop() {
     }
     
     // LED 1 on
-    digitalWrite(LEDpin_state1, HIGH);
+    digitalWrite(LEDpin_state1, LOW);
     digitalWrite(LEDpin_state2, LOW);
     digitalWrite(LEDpin_state3, LOW);
 
@@ -217,6 +218,16 @@ void loop() {
       dispWordsScroll(lcd, "Oh oh no! I openned the wrong door!");
       dispWordsScroll(lcd, "Aaaaaahhhh! I got catapulted out of the cave.");
       dispWordsScroll(lcd, "Hmmm. Where am I?");
+      digitalWrite(LEDpin_state4, LOW);
+      delay(250);
+      digitalWrite(LEDpin_state4, HIGH);
+      delay(250);
+      digitalWrite(LEDpin_state4, LOW);
+      delay(250);
+      digitalWrite(LEDpin_state4, HIGH);
+      delay(250);
+      digitalWrite(LEDpin_state4, LOW);
+      delay(250);
 
     } else if (task1_RFID) {
       state = 2;
@@ -241,7 +252,7 @@ void loop() {
     
     // LED 1 and 2 on
     digitalWrite(LEDpin_state1, HIGH);
-    digitalWrite(LEDpin_state2, HIGH);
+    digitalWrite(LEDpin_state2, LOW);
     digitalWrite(LEDpin_state3, LOW);
 
     
@@ -255,6 +266,16 @@ void loop() {
       dispWordsScroll(lcd, "Oh oh no! I touched an ancient rune!");
       dispWordsScroll(lcd, "Aaaaaahhhh! I got catapulted out of the cave.");
       dispWordsScroll(lcd, "Hmmm. Where am I?");
+      digitalWrite(LEDpin_state4, LOW);
+      delay(250);
+      digitalWrite(LEDpin_state4, HIGH);
+      delay(250);
+      digitalWrite(LEDpin_state4, LOW);
+      delay(250);
+      digitalWrite(LEDpin_state4, HIGH);
+      delay(250);
+      digitalWrite(LEDpin_state4, LOW);
+      delay(250);
     } 
     else if(task2_Oscill && task1_RFID) {
       state = 3;
@@ -278,7 +299,7 @@ void loop() {
     // LED 1, 2 and 3 on
     digitalWrite(LEDpin_state1, HIGH);
     digitalWrite(LEDpin_state2, HIGH);
-    digitalWrite(LEDpin_state3, HIGH);
+    digitalWrite(LEDpin_state3, LOW);
 
 
 
@@ -307,7 +328,7 @@ void loop() {
     digitalWrite(LEDpin_state3, HIGH);
 
     // display message
-    myservo.write(180);
+    myservo.write(100);
     dispWordsScroll(lcd, "CONGRATULATIONS!! YOU RECOVERED THE MAGIC LAMP!");
 
   } 
