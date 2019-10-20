@@ -1,59 +1,11 @@
-#include "LedControl.h"
-
-// Ultrasonic Sensor
-int trigPin = 41;    // Trigger
-int echoPin = 40;    // Echo
-float cm, lastCM;
+unsigned long lastMillis, lastPMillis;
 int period = 1000;
 int error = 500;
 int eqlDist = 10;
 int initOscCt = 5;
 int curOscCt = initOscCt;
-unsigned long lastMillis, lastPMillis;
 int curDelta;
-bool passedOsc;
-
-// Joystick
-int VRy = A0;
-int VRx = A1;
-int xPosition = 0;
-int yPosition = 0;
-short pos[] = {0, 0};
-bool walls[8][8];
-
-// Dot Matrix
 LedControl lc = LedControl(11,13,12,1); // Pins: DIN,CLK,CS, # of displays connected
- 
-void setup() {
-  // Serial Port begin
-  Serial.begin (9600);
-  // Define inputs and outputs
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  pinMode(VRx, INPUT);
-  pinMode(VRy, INPUT);
-
-  passedOsc = false;
-  resetOsc();
-  resetMatrix();
-}
-
-void resetOsc() {
-  // Reset all Osc variables 
-  curOscCt = initOscCt;
-  lastCM = 0;
-  lastMillis = 0;
-  curDelta = 0;
-  lastPMillis = 0;
-}
-
-void resetMatrix(LedControl lc, pos) {
-  pos[0] = 0;
-  pos[1] = 0;
-  lc.shutdown(0,false);  // Wake up display
-  lc.setIntensity(0,5);  // Set intensity level
-  lc.clearDisplay(0);  // Clear Display
-}
 
 bool runOsc() {
   // Call from main loop; returns whether it has passed the ultrasonic challenge
@@ -95,12 +47,12 @@ bool runOsc() {
   
   return curOscCt <= 0;
 }
- 
-void loop() {
-  lastMillis = millis();
-  //passedOsc = runOsc();
-  getJoystick(VRx, VRy, xPosition, yPosition, pos, lc, walls);
 
-  //delay to exactly 100 ms
-  delay(min(50 - (millis() - lastMillis),50));
+void resetOsc() {
+  // Reset all Osc variables 
+  curOscCt = initOscCt;
+  lastCM = 0;
+  lastMillis = 0;
+  curDelta = 0;
+  lastPMillis = 0;
 }

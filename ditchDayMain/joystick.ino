@@ -8,6 +8,15 @@ bool newWall[8];
 bool b = false;
 long frameboi = 0;
 
+int VRy = A0;
+int VRx = A1;
+int xPos = 0;
+int yPos = 0;
+short pos[] = {0, 0};
+bool walls[8][8];
+
+LedControl lc = LedControl(11,13,12,1); // Pins: DIN,CLK,CS, # of displays connected
+
 byte X[] =
 {
   B10000001,
@@ -32,7 +41,13 @@ byte check[] =
   B00000010
 };
 
-void getJoystick(int VRx, int VRy, int xPos, int yPos, short pos[], LedControl lc, bool walls[8][8]) {
+void init_joystick() {
+  pinMode(VRx, INPUT);
+  pinMode(VRy, INPUT);
+  resetMatrix();
+}
+
+void getJoystick() {
   frameboi++;
   xPos = map(analogRead(VRx), 0, 1023, -512, 512);
   yPos = map(analogRead(VRy), 0, 1023, -512, 512);
