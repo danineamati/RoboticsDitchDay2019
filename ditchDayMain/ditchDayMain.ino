@@ -215,7 +215,10 @@ void loop() {
      */
     //task2_Oscill = true;
     task2_Oscill = task2_Oscill || runOsc();
-    task3_Joystick = task3_Joystick || getJoystick(false);
+    int joy = getJoystick(false);
+    if (joy == 2) {
+      task3_Joystick = true;
+    }
     
     // LED 1 and 2 on
     digitalWrite(LEDpin_state1, HIGH);
@@ -232,6 +235,7 @@ void loop() {
     } 
     else if(task2_Oscill && task1_RFID) {
       state = 3;
+      resetJoystick();
     }
   } 
   else if(state == 3) 

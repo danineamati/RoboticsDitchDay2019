@@ -48,7 +48,7 @@ void init_joystick() {
   resetMatrix();
 }
 
-bool getJoystick(bool onThis) {
+int getJoystick(bool onThis) {
   frameboi++;
   //Serial.println(analogRead(VRx));
   xPos = map(analogRead(VRx), 0, 700, -512, 512);
@@ -63,6 +63,10 @@ bool getJoystick(bool onThis) {
   
   pos[0] = max(0, min(7, xPos + pos[0]));
   pos[1] = max(0, min(7, yPos + pos[1]));
+
+  if ((xPos != 0 || yPos != 0) && !onThis) {
+    return 2;
+  }
   
   wallMC--;
   if (wallMC <= 10 || getDelta() > 5000 && wallMC <= 11) {
@@ -112,7 +116,7 @@ bool getJoystick(bool onThis) {
       lc.clearDisplay(0);
       delay(500);
     }
-    reset();
+    resetJoystick();
   }
   if (onThis && getDelta() > 10000) {
     for (int j = 0; j < 3; j++) {
@@ -124,12 +128,12 @@ bool getJoystick(bool onThis) {
       lc.clearDisplay(0);
       delay(500);
     }
-    reset();
+    resetJoystick();
     
-    return true;
+    return 1;
   }
   //Serial.println(getDelta());
-  return false;
+  return 0;
   
 }
 
@@ -170,7 +174,7 @@ int sign(int x) {
     return (x > 0) - (x < 0);
 }
 
-void reset() {
+void resetJoystick() {
   lc.clearDisplay(0);
   for(int i = 0; i < 8; i++)
   {
