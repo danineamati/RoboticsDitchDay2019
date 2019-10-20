@@ -188,7 +188,11 @@ void loop() {
      */
 
     task2_Oscill = task2_Oscill || runOsc();
-    task3_Joystick = task3_Joystick || getJoystick(false);
+    // task3_Joystick = task3_Joystick || getJoystick(false);
+    int joy = getJoystick(false);
+    if (joy == 2) {
+      task3_Joystick = true;
+    }
     
     // LED 1 on
     digitalWrite(LEDpin_state1, HIGH);
@@ -196,15 +200,24 @@ void loop() {
     digitalWrite(LEDpin_state3, LOW);
 
     // display message
-    dispWordsScroll(lcd, "Find the lamp!");
+    dispWordsScroll(lcd, "Find the entrance!");
     RFIDloop(lcd);
     // if task 2 or 3 is completed, return to state 0
     // else if task 1 is completed, move to state 2
     // otherwise, no change
     if (task2_Oscill || task3_Joystick) {
       state = 0;
+
+      dispWordsScroll(lcd, "Oh oh no! I openned the wrong door!");
+      dispWordsScroll(lcd, "Aaaaaahhhh! I got catapulted out of the cave.");
+      dispWordsScroll(lcd, "Hmmm. Where am I?");
+
     } else if (task1_RFID) {
       state = 2;
+
+      // display message
+      dispWordsScroll(lcd, "Is that sound coming from the wall?");
+      dispWordsScroll(lcd, "Maybe if you wave your hand at the resonant frequency and correct distance, the wall will crumble...");
     }
   } 
   else if(state == 2) 
@@ -225,17 +238,25 @@ void loop() {
     digitalWrite(LEDpin_state2, HIGH);
     digitalWrite(LEDpin_state3, LOW);
 
-    // display message
+    
 
     // if task 3 completed, return to state 0
     // else if task 1 and 2 completed, move to state 3
     // otherwise, no change
     if (task3_Joystick) {
       state = 0;
+
+      dispWordsScroll(lcd, "Oh oh no! I touched an ancient rune!");
+      dispWordsScroll(lcd, "Aaaaaahhhh! I got catapulted out of the cave.");
+      dispWordsScroll(lcd, "Hmmm. Where am I?");
     } 
     else if(task2_Oscill && task1_RFID) {
       state = 3;
       resetJoystick();
+
+      // display message
+      dispWordsScroll(lcd, "A golden door appeared behind the wall.");
+      dispWordsScroll(lcd, "The ceiling is collapsing! I need to move through the maze of falling rocks! Hurry!")
     }
   } 
   else if(state == 3) 
@@ -252,7 +273,7 @@ void loop() {
     digitalWrite(LEDpin_state2, HIGH);
     digitalWrite(LEDpin_state3, HIGH);
 
-    // display message
+
 
     // if state 3 completed, move to state 4
     // otherwise, no change

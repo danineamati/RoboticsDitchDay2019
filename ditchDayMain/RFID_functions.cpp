@@ -83,7 +83,7 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
   // Reset the loop if no new card present on the sensor/reader. 
   // This saves the entire process when idle.
 
-  dispTextShift(myLCD, "Looking for RFID", "...");
+  dispTextShift(myLCD, "Looking for entrance", "...");
 
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
@@ -100,7 +100,7 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
 //  mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
   
   //Show UID on serial monitor
-  dispWordsScroll(myLCD, "Treasure ID :");
+  dispWordsScroll(myLCD, "Entrance ID :");
   String thisUID = "";
   for (byte i = 0; i < mfrc522.uid.size; i++) 
   {
@@ -114,16 +114,14 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
   // Substring starts at 1 because there is an extra space
   if (thisUID.substring(1) == accessUID)
   {
-    dispWordsScroll(myLCD, "You found the lamp!");
+    dispWordsScroll(myLCD, "You found the entrance!");
     task1_RFID = true;
     delay(3000);
   }
  
  else   {
-    dispWordsScroll(myLCD, "No! Not this treasure! That was a close one!");
+    dispWordsScroll(myLCD, "No! This is a cliff! That was a close one!");
     task1_RFID = false;
     delay(3000);
   }
-
-  dispTextShift(myLCD, "Entering the cave!", "");
 } 
