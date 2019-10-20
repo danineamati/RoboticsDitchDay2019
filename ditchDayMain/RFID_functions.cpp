@@ -115,13 +115,15 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
   if (thisUID.substring(1) == accessUID)
   {
     dispWordsScroll(myLCD, "You found the lamp!");
+    task1_RFID = true;
     delay(3000);
   }
  
  else   {
     dispWordsScroll(myLCD, "No! Not this treasure! That was a close one!");
+    task1_RFID = false;
     delay(3000);
   }
 
-  dispTextShift(myLCD, "Moving on", "");
+  dispTextShift(myLCD, "Entering the cave!", "");
 } 

@@ -18,6 +18,7 @@ ME/CS/EE 129
 // Change to the UID of the card that you want to give access
 extern String accessUID;
 extern MFRC522 mfrc522;   // Create MFRC522 instance.
+extern bool task1_RFID;
 
 void RFIDsetup();
 void RFIDsetup(LiquidCrystal_PCF8574 myLCD);
