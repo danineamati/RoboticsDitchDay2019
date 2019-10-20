@@ -5,8 +5,13 @@ ME/CS/EE 129
 
 */
 
+#ifndef LCD_FUNCTIONS
+#define LCD_FUNCTIONS 
+
 #include <Arduino.h>
 #include <LiquidCrystal_PCF8574.h>
+
+
 
 void dispTextSimplest(LiquidCrystal_PCF8574 myLCD, 
 	String line1, String line2);
@@ -24,3 +29,5 @@ void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
 int countWords(String inString);
 
 void parseString(String inString, int numWords, String* words);
+
+#endif
