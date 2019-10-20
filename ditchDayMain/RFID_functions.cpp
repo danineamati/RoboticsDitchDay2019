@@ -27,7 +27,7 @@ void RFIDsetup(LiquidCrystal_PCF8574 myLCD)
 {
   SPI.begin();          // Initiate  SPI bus
   mfrc522.PCD_Init();   // Initiate MFRC522
-  dispWordsScroll(myLCD, "RFID: Ready");
+  //dispWordsScroll(myLCD, "RFID: Ready");
 }
 
 void RFIDloop() 
@@ -83,7 +83,7 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
   // Reset the loop if no new card present on the sensor/reader. 
   // This saves the entire process when idle.
 
-  dispTextShift(myLCD, "Looking for entrance", "...");
+  dispTextShift(myLCD, "Looking around", "...");
 
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent()) 

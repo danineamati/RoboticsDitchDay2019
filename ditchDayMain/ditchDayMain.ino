@@ -52,7 +52,7 @@ bool task1_RFID = false;
 bool task2_Oscill = false;
 bool task3_Joystick = false;
 
-bool debug = true;
+bool debug = false;
 
 unsigned long lastMillis;
 
@@ -82,7 +82,7 @@ void setup() {
 
   lcd.begin(16, 2); // initialize the lcd (16 char, 2 lines)
   lcd.setBacklight(100);
-  dispTextSimplest(lcd, "Welcome!", "LCD: Ready");
+  //dispTextSimplest(lcd, "Welcome!", "LCD: Ready");
 
   delay(1000);
   
@@ -175,7 +175,7 @@ void loop() {
     
     // display intro message
     dispWordsScroll(lcd, "Only the diamond in the rough may enter the Cave of Wonders!!!");
-    dispWordsScroll(lcd, "Find the magic lamp, but careful of the obstacles ahead");
+    dispWordsScroll(lcd, "Find the magic lamp, but be careful of the obstacles ahead");
 
     // move to state 1
     state = 1;
@@ -252,11 +252,12 @@ void loop() {
     } 
     else if(task2_Oscill && task1_RFID) {
       state = 3;
-      resetJoystick();
+      
 
       // display message
       dispWordsScroll(lcd, "A golden door appeared behind the wall.");
-      dispWordsScroll(lcd, "The ceiling is collapsing! I need to move through the maze of falling rocks! Hurry!")
+      dispWordsScroll(lcd, "The ceiling is collapsing! I need to move through the maze of falling rocks! Hurry!");
+      resetJoystick();
     }
   } 
   else if(state == 3) 
