@@ -102,5 +102,5 @@ void loop() {
   getJoystick(VRx, VRy, xPosition, yPosition, pos, lc, walls);
 
   //delay to exactly 100 ms
-  delay(min(75 - (millis() - lastMillis),75));
+  delay(min(50 - (millis() - lastMillis),50));
 }
