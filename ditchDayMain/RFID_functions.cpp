@@ -32,6 +32,7 @@ void RFIDsetup(LiquidCrystal_PCF8574 myLCD)
 
 void RFIDloop() 
 {
+
   // Reset the loop if no new card present on the sensor/reader. 
   // This saves the entire process when idle.
 //  Serial.println("Start of Loop");
@@ -81,7 +82,9 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
 {
   // Reset the loop if no new card present on the sensor/reader. 
   // This saves the entire process when idle.
-//  Serial.println("Start of Loop");
+
+  dispTextShift(myLCD, "Looking for RFID", "...");
+
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
@@ -119,4 +122,6 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
     dispWordsScroll(myLCD, "No! Not this treasure! That was a close one!");
     delay(3000);
   }
+
+  dispTextShift(myLCD, "Moving on", "");
 } 

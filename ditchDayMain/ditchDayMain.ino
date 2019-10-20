@@ -97,7 +97,7 @@ void loop() {
     // Run task loops
 
     // Task 1 - Bring the arduinos to the RFID sensor (hidden)
-//    RFIDloop(lcd);
+    RFIDloop(lcd);
     
     // Task 2 - Reduce the wall to rubish!
 
