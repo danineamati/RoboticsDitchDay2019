@@ -26,6 +26,9 @@
  */
 
 // import subfunctions
+#include "LCD_functions.h"
+#include "RFID_Test.h"
+
 
 // global state variable
 int state = 0;
