@@ -1,12 +1,19 @@
+/* Common functions needed from RFID portion of project
+
+Team: Daniel and Spencer
+ME/CS/EE 129
+
+*/
+
 /*
- * By Daniel Neamati and Spencer Morgenfeld
- * 
  * Original code inspired by FILIPEFLOP'
  * Inspired by project on: https://randomnerdtutorials.com/
  * 
  */
  
-#include "RFID_Test.h"
+#include "RFID_functions.h"
+
+
 
 void RFIDsetup()
 {
@@ -20,11 +27,12 @@ void RFIDsetup(LiquidCrystal_PCF8574 myLCD)
 {
   SPI.begin();          // Initiate  SPI bus
   mfrc522.PCD_Init();   // Initiate MFRC522
-  dispWordsScroll(myLCD, "RFID: Find your card and bring it to the reader...");
+  dispWordsScroll(myLCD, "RFID: Ready");
 }
 
 void RFIDloop() 
 {
+
   // Reset the loop if no new card present on the sensor/reader. 
   // This saves the entire process when idle.
 //  Serial.println("Start of Loop");
@@ -43,7 +51,7 @@ void RFIDloop()
 //  mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
   
   //Show UID on serial monitor
-  Serial.print("UID tag :");
+  Serial.print("Treasure ID :");
   String thisUID = "";
   for (byte i = 0; i < mfrc522.uid.size; i++) 
   {
@@ -59,13 +67,13 @@ void RFIDloop()
   // Substring starts at 1 because there is an extra space
   if (thisUID.substring(1) == accessUID)
   {
-    Serial.println("Authorized access");
+    Serial.println("You found the lamp!");
     Serial.println();
     delay(3000);
   }
  
  else   {
-    Serial.println(" Access denied");
+    Serial.println("No! Not this treasure! That was a close one!");
     delay(3000);
   }
 } 
@@ -74,7 +82,9 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
 {
   // Reset the loop if no new card present on the sensor/reader. 
   // This saves the entire process when idle.
-//  Serial.println("Start of Loop");
+
+  dispTextShift(myLCD, "Looking for RFID", "...");
+
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
@@ -90,7 +100,7 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
 //  mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
   
   //Show UID on serial monitor
-  dispWordsScroll(myLCD, "UID tag :");
+  dispWordsScroll(myLCD, "Treasure ID :");
   String thisUID = "";
   for (byte i = 0; i < mfrc522.uid.size; i++) 
   {
@@ -104,12 +114,14 @@ void RFIDloop(LiquidCrystal_PCF8574 myLCD)
   // Substring starts at 1 because there is an extra space
   if (thisUID.substring(1) == accessUID)
   {
-    dispWordsScroll(myLCD, "Authorized access");
+    dispWordsScroll(myLCD, "You found the lamp!");
     delay(3000);
   }
  
  else   {
-    dispWordsScroll(myLCD, "Access denied");
+    dispWordsScroll(myLCD, "No! Not this treasure! That was a close one!");
     delay(3000);
   }
+
+  dispTextShift(myLCD, "Moving on", "");
 } 

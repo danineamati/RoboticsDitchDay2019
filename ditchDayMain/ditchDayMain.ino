@@ -27,8 +27,20 @@
 
 // import subfunctions
 #include "LCD_functions.h"
-#include "RFID_Test.h"
+#include "RFID_functions.h"
 
+#include <MFRC522.h>
+#include <Wire.h>
+
+// LCD Set up
+LiquidCrystal_PCF8574 lcd(0x27);  
+// set the LCD address to 0x27 for a 16 chars and 2 line display
+
+// RFID Set up
+#define RST_PIN         5          // Configurable, see typical pin layout above
+#define SS_PIN          53         // Configurable, see typical pin layout above
+String accessUID = "79 0B 38 8E";
+MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
 // global state variable
 int state = 0;
@@ -51,10 +63,27 @@ void setup() {
   // initialize Serial (for debugging)
   Serial.begin(9600);
   
-  
   // initialize LCD Display
+  Wire.begin();
+  Wire.beginTransmission(0x27); //Your LCD Address
+  int error = Wire.endTransmission();
+  Serial.print("Start Up Status: ");
+  Serial.print(error);
+
+  if (error == 0) {
+    Serial.println(": LCD found.");
+  } else {
+    Serial.println(": LCD not found.");
+  }
+
+  lcd.begin(16, 2); // initialize the lcd (16 char, 2 lines)
+  lcd.setBacklight(100);
+  dispTextSimplest(lcd, "Welcome!", "LCD: Ready");
+
+  delay(1000);
   
   // initialize RFID
+  RFIDsetup(lcd);
 
   // initialize Ultrasonic Sensor
 
@@ -63,7 +92,20 @@ void setup() {
 }
 
 void loop() {
-  // Run task loops
+
+  if (state != 0) {
+    // Run task loops
+
+    // Task 1 - Bring the arduinos to the RFID sensor (hidden)
+    RFIDloop(lcd);
+    
+    // Task 2 - Reduce the wall to rubish!
+
+    // Task 3 - Escape the cave!
+    
+    
+  }
+  
 
   delay(1000);
 
@@ -84,6 +126,7 @@ void loop() {
   Serial.println();
 
 
+  // Master override
 
   if (Serial.available() > 0) {    // is a character available?
     int serialNum = Serial.read();       // get the character
@@ -127,8 +170,9 @@ void loop() {
     digitalWrite(LEDpin_state2, LOW);
     digitalWrite(LEDpin_state3, LOW);
     
-
     // display intro message
+    dispWordsScroll(lcd, "Only the diamond in the rough may enter the Cave of Wonders!!!");
+    dispWordsScroll(lcd, "Find the magic lamp, but careful of the obstacles ahead");
 
     // move to state 1
     state = 1;
@@ -218,6 +262,7 @@ void loop() {
     digitalWrite(LEDpin_state3, HIGH);
 
     // display message
+    dispWordsScroll(lcd, "CONGRATULATIONS!! YOU RECOVERED THE MAGIC LAMP!");
 
   } 
   else 
