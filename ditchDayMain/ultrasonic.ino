@@ -1,12 +1,13 @@
-unsigned long lastMillis, lastPMillis;
+unsigned long lastPMillis;
 int period = 1000;
 int error = 500;
-int eqlDist = 10;
+int eqlDist = 20;
 int initOscCt = 5;
 int curOscCt = initOscCt;
 int curDelta;
 int trigPin = 41;    // Trigger
 int echoPin = 40;    // Echo
+float cm, lastCM;
 
 void init_Sonic() {
   pinMode(trigPin, OUTPUT);
@@ -45,7 +46,7 @@ bool runOsc() {
     }
   }
   
-  //Serial.print(cm);
+  Serial.println(cm);
   //Serial.print("cm ");
   //Serial.print(curOscCt);
   //Serial.println();
@@ -59,7 +60,6 @@ void resetOsc() {
   // Reset all Osc variables 
   curOscCt = initOscCt;
   lastCM = 0;
-  lastMillis = 0;
   curDelta = 0;
   lastPMillis = 0;
 }

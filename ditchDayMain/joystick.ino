@@ -12,12 +12,13 @@ int VRy = A0;
 int VRx = A1;
 int xPos = 0;
 int yPos = 0;
-short pos[] = {0, 0};
-bool walls[8][8];
+short pos[3] = {0, 0};
+short posx, posy;
+bool walls[9][9];
 
 LedControl lc = LedControl(11,13,12,1); // Pins: DIN,CLK,CS, # of displays connected
 
-byte X[] =
+byte X[8] =
 {
   B10000001,
   B01000010,
@@ -29,7 +30,7 @@ byte X[] =
   B10000001
 };
 
-byte check[] =
+byte check[8] =
 {
   B00010000,
   B00100000,
@@ -47,19 +48,22 @@ void init_joystick() {
   resetMatrix();
 }
 
-void getJoystick() {
+bool getJoystick(bool onThis) {
   frameboi++;
-  xPos = map(analogRead(VRx), 0, 1023, -512, 512);
-  yPos = map(analogRead(VRy), 0, 1023, -512, 512);
+  //Serial.println(analogRead(VRx));
+  xPos = map(analogRead(VRx), 0, 700, -512, 512);
+  yPos = map(analogRead(VRy), 0, 700, -512, 512);
 
-  if (abs(xPos) < 5) {xPos = 0;}
-  if (abs(yPos) < 5) {yPos = 0;}
-
+  
+  if (abs(xPos) < 200) {xPos = 0;}
+  if (abs(yPos) < 200) {yPos = 0;}
+  //Serial.println(xPos);
   xPos = scaleInput(xPos);
   yPos = scaleInput(yPos);
+  
   pos[0] = max(0, min(7, xPos + pos[0]));
   pos[1] = max(0, min(7, yPos + pos[1]));
-
+  
   wallMC--;
   if (wallMC <= 10 || getDelta() > 5000 && wallMC <= 11) {
     wallMC = wallMCMax;
@@ -89,8 +93,11 @@ void getJoystick() {
     
   }
   
-  drawScreen(pos, walls, lc);
-  if (walls[7-pos[0]][7-pos[1]]) {
+  drawScreen();
+  //Serial.print(pos[0]);
+  //Serial.print(" ");
+  //Serial.println(pos[1]);
+  if (onThis && walls[7-pos[0]][7-pos[1]]) {
     for (int i = 0; i < 5; i++) {
       lc.setLed(0, pos[1], pos[0], b);
       b = !b;
@@ -105,9 +112,9 @@ void getJoystick() {
       lc.clearDisplay(0);
       delay(500);
     }
-    reset(lc, walls);
+    reset();
   }
-  if (getDelta() > 10000) {
+  if (onThis && getDelta() > 10000) {
     for (int j = 0; j < 3; j++) {
       for (int i = 0; i < 8; i++)  
       {
@@ -117,15 +124,16 @@ void getJoystick() {
       lc.clearDisplay(0);
       delay(500);
     }
-    reset(lc, walls);
+    reset();
+    
     return true;
   }
-  Serial.println(getDelta());
+  //Serial.println(getDelta());
   return false;
   
 }
 
-void drawScreen(short pos[], bool walls[8][8], LedControl lc) {
+void drawScreen() {
   lc.clearDisplay(0);
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
@@ -162,7 +170,7 @@ int sign(int x) {
     return (x > 0) - (x < 0);
 }
 
-void reset(LedControl lc, bool walls[8][8]) {
+void reset() {
   lc.clearDisplay(0);
   for(int i = 0; i < 8; i++)
   {
@@ -170,14 +178,16 @@ void reset(LedControl lc, bool walls[8][8]) {
       walls[i][j] = false;
     }
   }
+  resetMatrix();
   startMillis = millis();
+  
 }
 
 long getDelta() {
   return (millis() - startMillis);
 }
 
-void resetMatrix(LedControl lc, pos) {
+void resetMatrix() {
   pos[0] = 0;
   pos[1] = 0;
   lc.shutdown(0,false);  // Wake up display

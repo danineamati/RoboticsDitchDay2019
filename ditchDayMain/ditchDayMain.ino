@@ -52,6 +52,10 @@ bool task1_RFID = false;
 bool task2_Oscill = false;
 bool task3_Joystick = false;
 
+bool debug = true;
+
+unsigned long lastMillis;
+
 String serialInput = "";
 
 void setup() {
@@ -86,18 +90,18 @@ void setup() {
   RFIDsetup(lcd);
 
   // initialize Ultrasonic Sensor
-
+  init_Sonic();
   // initialize joystick
-
+  init_joystick();
 }
 
 void loop() {
-
+  lastMillis = millis();
   if (state != 0) {
     // Run task loops
 
     // Task 1 - Bring the arduinos to the RFID sensor (hidden)
-    RFIDloop(lcd);
+    //RFIDloop(lcd);
     
     // Task 2 - Reduce the wall to rubish!
 
@@ -107,24 +111,23 @@ void loop() {
   }
   
 
-  delay(1000);
-
-
-  // Display state for debugging
-  Serial.print("You are currently at state ** ");
-  Serial.print(state);
-  Serial.println(" ** ");
-
-  // Display task status for debugging
-  Serial.println("Task Status:");
-  Serial.print("  1) Task 1 (RFID) =     ");
-  Serial.println(task1_RFID);
-  Serial.print("  2) Task 2 (Oscil) =    ");
-  Serial.println(task2_Oscill);
-  Serial.print("  3) Task 3 (JoyStck) =  ");
-  Serial.println(task3_Joystick);
-  Serial.println();
-
+  if (debug) {
+    // Display state for debugging
+    Serial.print("You are currently at state ** ");
+    Serial.print(state);
+    Serial.println(" ** ");
+  
+    // Display task status for debugging
+    
+    Serial.println("Task Status:");
+    Serial.print("  1) Task 1 (RFID) =     ");
+    Serial.println(task1_RFID);
+    Serial.print("  2) Task 2 (Oscil) =    ");
+    Serial.println(task2_Oscill);
+    Serial.print("  3) Task 3 (JoyStck) =  ");
+    Serial.println(task3_Joystick);
+    Serial.println(); 
+  }
 
   // Master override
 
@@ -171,8 +174,8 @@ void loop() {
     digitalWrite(LEDpin_state3, LOW);
     
     // display intro message
-    dispWordsScroll(lcd, "Only the diamond in the rough may enter the Cave of Wonders!!!");
-    dispWordsScroll(lcd, "Find the magic lamp, but careful of the obstacles ahead");
+    //dispWordsScroll(lcd, "Only the diamond in the rough may enter the Cave of Wonders!!!");
+    //dispWordsScroll(lcd, "Find the magic lamp, but careful of the obstacles ahead");
 
     // move to state 1
     state = 1;
@@ -183,7 +186,10 @@ void loop() {
      *        - Moves to State 2 iff task 1 ONLY complete
      *        - Returns to State 0 if any other taks complete
      */
-
+    task1_RFID = true;
+    //task2_Oscill = task2_Oscill || runOsc();
+    //task3_Joystick = task3_Joystick || getJoystick(false);
+    
     // LED 1 on
     digitalWrite(LEDpin_state1, HIGH);
     digitalWrite(LEDpin_state2, LOW);
@@ -206,7 +212,10 @@ void loop() {
      *        - Moves to State 3 iff task 1&2 complete
      *        - Returns to Stat 0 if task 3 is completed
      */
-
+    //task2_Oscill = true;
+    task2_Oscill = task2_Oscill || runOsc();
+    task3_Joystick = task3_Joystick || getJoystick(false);
+    
     // LED 1 and 2 on
     digitalWrite(LEDpin_state1, HIGH);
     digitalWrite(LEDpin_state2, HIGH);
@@ -230,6 +239,9 @@ void loop() {
      *        - Moves to State 4 iff task 3 complete
      */
 
+    //task2_Oscill = task2_Oscill || runOsc();
+    task3_Joystick = task3_Joystick || getJoystick(true);
+    
     // LED 1, 2 and 3 on
     digitalWrite(LEDpin_state1, HIGH);
     digitalWrite(LEDpin_state2, HIGH);
@@ -237,7 +249,7 @@ void loop() {
 
     // display message
 
-    // if taks 3 completed, move to state 4
+    // if state 3 completed, move to state 4
     // otherwise, no change
     if (task3_Joystick) {
       state = 4;
@@ -280,11 +292,13 @@ void loop() {
     state = 0;
 
   }
-
-  Serial.print("You are ending at state ** ");
-  Serial.print(state);
-  Serial.println(" ** ");
-  Serial.println();
-  Serial.println();
+  if (debug) {
+    Serial.print("You are ending at state ** ");
+    Serial.print(state);
+    Serial.println(" ** ");
+    Serial.println();
+    Serial.println();
+  }
+  delay(min(100 - (millis() - lastMillis),100));
 
 }
