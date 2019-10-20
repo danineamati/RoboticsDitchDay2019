@@ -174,8 +174,8 @@ void loop() {
     digitalWrite(LEDpin_state3, LOW);
     
     // display intro message
-    //dispWordsScroll(lcd, "Only the diamond in the rough may enter the Cave of Wonders!!!");
-    //dispWordsScroll(lcd, "Find the magic lamp, but careful of the obstacles ahead");
+    dispWordsScroll(lcd, "Only the diamond in the rough may enter the Cave of Wonders!!!");
+    dispWordsScroll(lcd, "Find the magic lamp, but careful of the obstacles ahead");
 
     // move to state 1
     state = 1;
@@ -186,9 +186,9 @@ void loop() {
      *        - Moves to State 2 iff task 1 ONLY complete
      *        - Returns to State 0 if any other taks complete
      */
-    task1_RFID = true;
-    //task2_Oscill = task2_Oscill || runOsc();
-    //task3_Joystick = task3_Joystick || getJoystick(false);
+
+    task2_Oscill = task2_Oscill || runOsc();
+    task3_Joystick = task3_Joystick || getJoystick(false);
     
     // LED 1 on
     digitalWrite(LEDpin_state1, HIGH);
@@ -196,7 +196,8 @@ void loop() {
     digitalWrite(LEDpin_state3, LOW);
 
     // display message
-
+    dispWordsScroll(lcd, "Find the lamp!");
+    RFIDloop(lcd);
     // if task 2 or 3 is completed, return to state 0
     // else if task 1 is completed, move to state 2
     // otherwise, no change
