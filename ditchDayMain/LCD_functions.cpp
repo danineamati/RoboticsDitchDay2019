@@ -14,12 +14,12 @@ int lcdMaxLength = 16;
 /* The simplest print this line1 top and line2 bottom
  */
 void dispTextSimplest(LiquidCrystal_PCF8574 myLCD, 
-	String line1, String line2) {
+  String line1, String line2) {
 
-	myLCD.setCursor(0,0);
-	myLCD.print(line1);
-	myLCD.setCursor(0,1);
-	myLCD.print(line2);
+  myLCD.setCursor(0,0);
+  myLCD.print(line1);
+  myLCD.setCursor(0,1);
+  myLCD.print(line2);
 }
 
 
@@ -27,15 +27,15 @@ void dispTextSimplest(LiquidCrystal_PCF8574 myLCD,
  * Displays two lines of text to the LCD screen. If the text is
  * too long, it will shift left.
  * 
- * INPUT: 	myLCD is the LCD object
- *			line1 is the top line of string to display
- *			line2 is the bottom line of string to display
+ * INPUT:   myLCD is the LCD object
+ *      line1 is the top line of string to display
+ *      line2 is the bottom line of string to display
  */ 
 void dispTextShift(LiquidCrystal_PCF8574 myLCD, 
-	String line1, String line2) {
+  String line1, String line2) {
 
-	// Clear the LED and set up
-	myLCD.setBacklight(100);
+  // Clear the LED and set up
+  myLCD.setBacklight(100);
     myLCD.home(); myLCD.clear();
     myLCD.setCursor(0,0);
 
@@ -50,12 +50,12 @@ void dispTextShift(LiquidCrystal_PCF8574 myLCD,
     // While the line characters are such that the message has not
     // been fully displayed, then the shift left
     do {
-    	dispTextSimplest(myLCD, line1, line2);
-	    
-	    delay(1000); // Delay to allow reading
+      dispTextSimplest(myLCD, line1, line2);
+      
+      delay(1000); // Delay to allow reading
 
-	    myLCD.scrollDisplayLeft();
-	    counter --;
+      myLCD.scrollDisplayLeft();
+      counter --;
     } while (counter >= lcdMaxLength);
 
     delay(1000);
@@ -65,14 +65,14 @@ void dispTextShift(LiquidCrystal_PCF8574 myLCD,
  * Displays an arbitrary length of text as a scroll sequence.
  * No distinction of words is made.
  *
- * Input:	myLCD is the LCD object
- *			tot is the whole string to display
+ * Input: myLCD is the LCD object
+ *      tot is the whole string to display
  */ 
 void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
-	String tot) {
+  String tot) {
 
-	// Clear the LED and set up
-	myLCD.setBacklight(100);
+  // Clear the LED and set up
+  myLCD.setBacklight(100);
   myLCD.home(); myLCD.clear();
 
   // Store the string length as a counter
@@ -93,41 +93,41 @@ void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
   delay(1000);
 
   while (totCounter > 2 * lcdMaxLength) {
-  	myLCD.clear();
+    myLCD.clear();
 
-  	line1 = tot.substring(line1Start, line1Start + lcdMaxLength);
-  	line2 = tot.substring(line2Start, line2Start + lcdMaxLength);
+    line1 = tot.substring(line1Start, line1Start + lcdMaxLength);
+    line2 = tot.substring(line2Start, line2Start + lcdMaxLength);
 
 
-  	dispTextSimplest(myLCD, line1, line2);
+    dispTextSimplest(myLCD, line1, line2);
 
-  	totCounter -= lcdMaxLength; // Moved one whole line
-  	line1Start += lcdMaxLength; // Move line 2 to line 1
-  	line2Start += lcdMaxLength; // Move line 3 to line 2
+    totCounter -= lcdMaxLength; // Moved one whole line
+    line1Start += lcdMaxLength; // Move line 2 to line 1
+    line2Start += lcdMaxLength; // Move line 3 to line 2
 
-  	delay(3000);
+    delay(3000);
   }
 
   // We only have two lines and can display the remaining text.
   if (totCounter > lcdMaxLength) {
-  	myLCD.clear();
-  	myLCD.setCursor(0,0);
-  	myLCD.print("Only 2 lines");
+    myLCD.clear();
+    myLCD.setCursor(0,0);
+    myLCD.print("Only 2 lines");
 
-  	line1 = tot.substring(line1Start, line1Start + lcdMaxLength);
-  	line2 = tot.substring(line2Start);
+    line1 = tot.substring(line1Start, line1Start + lcdMaxLength);
+    line2 = tot.substring(line2Start);
 
-  	dispTextSimplest(myLCD, line1, line2);
-  	delay(3000);
+    dispTextSimplest(myLCD, line1, line2);
+    delay(3000);
   }
 
   // We only have one line and can display the remaining text.
   if (totCounter <= lcdMaxLength) {
-  	line1 = tot.substring(line1Start);
+    line1 = tot.substring(line1Start);
 
-  	myLCD.clear();
-  	myLCD.setCursor(0,0);
-  	myLCD.print(line1);
+    myLCD.clear();
+    myLCD.setCursor(0,0);
+    myLCD.print(line1);
   }
 
 
@@ -137,14 +137,14 @@ void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
  * Displays an arbitrary length of text as a scroll sequence.
  * Distinction IS MADE for parsing words.
  *
- * Input:	myLCD is the LCD object
- *			tot is the whole string to display
+ * Input: myLCD is the LCD object
+ *      tot is the whole string to display
  */ 
 void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
-	String tot) {
+  String tot) {
 
-	// Clear the LED and set up
-	myLCD.setBacklight(100);
+  // Clear the LED and set up
+  myLCD.setBacklight(100);
     myLCD.home(); myLCD.clear();
 
     // Parse string
@@ -152,7 +152,7 @@ void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
 
     // Edge case, empty sting
     if (numWords <= 0) {
-    	return;
+      return;
     }
 
     String words[numWords];
@@ -167,86 +167,86 @@ void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
     // Look at each word in the array, determine it's length.
     // Note that the first word has already been added.
     for (int thisWord = 1; thisWord < numWords; thisWord ++) {
-	    // Check if the line has room for that word
-    	currentWord = words[thisWord];
+      // Check if the line has room for that word
+      currentWord = words[thisWord];
 
-    	if (currentWord.length() + line2.length() < lcdMaxLength) 
-    	{
-    		// if there is room
-		    // Add the word to the string
-		    line2 = line2 + " " + currentWord;
-		    // Move to the next word
-    	} 
-    	else 
-    	{
-    		// otherwise, the line is full.
-    		// Print the strings
-    		myLCD.clear();
-   			dispTextSimplest(myLCD, line1, line2);
-   			delay(1000);
-		    // Move line 2 to line 1
-		    line1 = line2;
-		    // Refresh line 2, and add the word to the string
-		    line2 = currentWord;
-    	}
+      if (currentWord.length() + line2.length() < lcdMaxLength) 
+      {
+        // if there is room
+        // Add the word to the string
+        line2 = line2 + " " + currentWord;
+        // Move to the next word
+      } 
+      else 
+      {
+        // otherwise, the line is full.
+        // Print the strings
+        myLCD.clear();
+        dispTextSimplest(myLCD, line1, line2);
+        delay(1000);
+        // Move line 2 to line 1
+        line1 = line2;
+        // Refresh line 2, and add the word to the string
+        line2 = currentWord;
+      }
     }
 
     myLCD.clear();
-	myLCD.setCursor(0,0);
-	myLCD.print(line1);
-	myLCD.setCursor(0,1);
-	myLCD.print(line2);
-	delay(1000);
+  myLCD.setCursor(0,0);
+  myLCD.print(line1);
+  myLCD.setCursor(0,1);
+  myLCD.print(line2);
+  delay(1000);
 }
 
 // Determine number of words in a string (based on spaces)
 // int countWords(LiquidCrystal_PCF8574 myLCD, String inString) {
 int countWords(String inString) {
-	int numWords = 0;
-	int lastSpace = 0;
-	int nextSpace = 0;
+  int numWords = 0;
+  int lastSpace = 0;
+  int nextSpace = 0;
 
-	while (nextSpace != -1) {
-		nextSpace = inString.indexOf(" ", lastSpace);
-		numWords ++;
-		lastSpace = nextSpace + 1;
+  while (nextSpace != -1) {
+    nextSpace = inString.indexOf(" ", lastSpace);
+    numWords ++;
+    lastSpace = nextSpace + 1;
 
-		// dispTextSimple(myLCD, String(numWords), String(nextSpace));
-	}
+    // dispTextSimple(myLCD, String(numWords), String(nextSpace));
+  }
 
-	return numWords;
+  return numWords;
 }
 
 /* 
  * Parse a string into an array of words.
  *
- * INPUT: 	inString is the string to parse
- * 			numWords is the number of words in the string 
- * 				(e.g. from using the count words function)
- *			words is the output word array
+ * INPUT:   inString is the string to parse
+ *      numWords is the number of words in the string 
+ *        (e.g. from using the count words function)
+ *      words is the output word array
  *
- * OUTPUT:	the word array (modified from what was passed in)
+ * OUTPUT:  the word array (modified from what was passed in)
  */
 void parseString(String inString, int numWords, String* words) {
 
-	int counter = 0;
-	int lastSpace = 0;
-	int nextSpace = 0;
+  int counter = 0;
+  int lastSpace = 0;
+  int nextSpace = 0;
 
-	while (counter < numWords) {
-		nextSpace = inString.indexOf(" ", lastSpace);
+  while (counter < numWords) {
+    nextSpace = inString.indexOf(" ", lastSpace);
 
-		if (nextSpace == -1) {
-			// If there are no spaces left, take the rest of the
-			// string.
-			words[counter] = inString.substring(lastSpace);
-			break;
-		} else {
-			words[counter] = inString.substring(lastSpace, nextSpace);
-		}
+    if (nextSpace == -1) {
+      // If there are no spaces left, take the rest of the
+      // string.
+      words[counter] = inString.substring(lastSpace);
+      break;
+    } else {
+      words[counter] = inString.substring(lastSpace, nextSpace);
+    }
 
-		lastSpace = nextSpace + 1;
-		counter ++;
-		
-	}
+    lastSpace = nextSpace + 1;
+    counter ++;
+    
+  }
 }

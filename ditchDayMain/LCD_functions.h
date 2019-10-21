@@ -14,16 +14,16 @@ ME/CS/EE 129
 
 
 void dispTextSimplest(LiquidCrystal_PCF8574 myLCD, 
-	String line1, String line2);
+    String line1, String line2);
 
 void dispTextShift(LiquidCrystal_PCF8574 myLCD, 
-	String line1, String line2);
+    String line1, String line2);
 
 void dispTextScroll(LiquidCrystal_PCF8574 myLCD,
-	String tot);
+    String tot);
 
 void dispWordsScroll(LiquidCrystal_PCF8574 myLCD,
-	String tot);
+    String tot);
 
 // int countWords(LiquidCrystal_PCF8574 myLCD, String inString);
 int countWords(String inString);
